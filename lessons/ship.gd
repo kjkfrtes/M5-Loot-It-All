@@ -4,8 +4,21 @@ extends Area2D
 var max_speed := 1200.0
 var velocity := Vector2(0, 0)
 var steering_factor := 3.0
+var health := 10.0
+
+func set_health(new_health: int) -> void:
+	health = new_health
+	get_node("UI/Healthbar").value = health
+
+func _ready() -> void:
+	area_entered.connect(_on_area_entered)
+	set_health(health)
 
 
+func _on_area_entered(area_that_entered: Area2D) -> void:
+	set_health(health + 10.0)
+	
+	
 func _process(delta: float) -> void:
 	var direction := Vector2(0, 0)
 	direction.x = Input.get_axis("move_left", "move_right")
