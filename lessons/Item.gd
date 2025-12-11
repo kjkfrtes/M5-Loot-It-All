@@ -1,8 +1,23 @@
 extends Area2D
-func _ready() -> void:
-	area_entered.connect(delete_the_health_pack)
-	play_floating_animation()
+@onready var sfx_player: AudioStreamPlayer = _find_sfx_player()
+func _find_sfx_player() ->AudioStreamPlayer:
+	for child in get_children():
+		if child is AudioStreamPlayer:
+			return child
+	return null
+
+func _on_area_entered(area_that_entered: Area2D) -> void:
+	get_node("CollisonShape2D").set_deferred("disabled",true)
+	visible = false
 	
+	if sfx_player:
+		sfx_player.play()
+		await sfx_player.finished
+	queue_free()
+
+func _ready() -> void:
+	play_floating_animation()
+	area_entered.connect(_on_area_entered)
 	
 func play_floating_animation() -> void:
 	var tween := create_tween()
@@ -15,5 +30,3 @@ func play_floating_animation() -> void:
 	tween.set_loops()
 	
 	
-func delete_the_health_pack(what_touched_the_health_pack: Area2D) -> void:
-	queue_free()

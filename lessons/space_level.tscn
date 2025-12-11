@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://btkjymc78ap8d"]
+[gd_scene load_steps=5 format=3 uid="uid://btkjymc78ap8d"]
 
 [ext_resource type="PackedScene" uid="uid://dmv50krf4bo5r" path="res://lessons/ship.tscn" id="2_2j1u5"]
 [ext_resource type="PackedScene" uid="uid://bxfevggvxo634" path="res://assets/background/space_background.tscn" id="3_e6xy1"]
+[ext_resource type="AudioStream" uid="uid://b1tpridvt17tm" path="res://assets/Audio/BG_Music.wav" id="4_4rc43"]
 [ext_resource type="PackedScene" uid="uid://b1yl6aosq3kty" path="res://lessons/random_item_placer.tscn" id="5_kd2gs"]
 
 [node name="Level" type="Node2D"]
@@ -12,3 +13,8 @@
 
 [node name="Ship" parent="." instance=ExtResource("2_2j1u5")]
 position = Vector2(944, 511)
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_4rc43")
+autoplay = true
+max_polyphony = 2
