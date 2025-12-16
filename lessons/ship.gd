@@ -1,6 +1,8 @@
 extends Area2D
 
 @onready var thruster_sound_player: AudioStreamPlayer = $ThrusterSoundPlayer
+@onready var powerup_sound_player: AudioStreamPlayer = $PowerupSoundPlayer
+
 
 var max_speed := 1200.0
 var velocity := Vector2(0, 0)
@@ -11,6 +13,11 @@ var gem_count := 0
 func set_gem_count(new_gem_count: int) -> void:
 	gem_count = new_gem_count
 	get_node("UI/GemCount").text = "x" + str(gem_count)
+	if gem_count > 0 and gem_count % 10 == 0:
+		powerup_sound_player.stream = preload("res://assets/Audio/Health_Level_Up.wav")
+		powerup_sound_player.play()
+
+
 
 func set_health(new_health: int) -> void:
 	health = new_health
@@ -24,9 +31,10 @@ func _ready() -> void:
 func _on_area_entered(area_that_entered: Area2D) -> void:
 	if area_that_entered.is_in_group("gem"):
 		set_gem_count(gem_count + 1.0)
+		area_that_entered.queue_free()
 	elif area_that_entered.is_in_group("healing_item"):
 		set_health(health + 10.0)
-	
+		area_that_entered.queue_free()
 	
 func _process(delta: float) -> void:
 	var direction := Vector2(0, 0)
